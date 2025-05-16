@@ -1,46 +1,122 @@
-<!DOCTYPE html>
-<html>
+=<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Password Grader</title>
+  <meta charset="UTF-8">
+  <title>🔐 Password Grader</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background-color: #f0f8ff;
+      text-align: center;
+      padding: 30px;
+      color: #333;
+    }
+    h1 {
+      color: #0a75ad;
+      font-size: 2.5em;
+    }
+    input[type="password"] {
+      font-size: 1.2em;
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      margin-top: 20px;
+      border-radius: 10px;
+      border: 2px solid #ccc;
+    }
+    button {
+      font-size: 1.2em;
+      padding: 10px 25px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 8px;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    #grade {
+      font-size: 2.2em;
+      margin-top: 30px;
+    }
+    .grade-A { color: green; }
+    .grade-B { color: blue; }
+    .grade-C { color: orange; }
+    .grade-D { color: orangered; }
+    .grade-F { color: red; }
+    #tips {
+      background-color: #fff3cd;
+      color: #856404;
+      padding: 15px;
+      margin-top: 40px;
+      border-radius: 10px;
+      display: inline-block;
+      max-width: 500px;
+    }
+  </style>
 </head>
-<body style="font-family: sans-serif; text-align: center; padding: 40px;">
-    <h2>Password Strength Grader</h2>
-    <input type="password" id="password" placeholder="Enter password" size="40" />
-    <br><br>
-    <button onclick="gradePassword()">Check Password</button>
-    <h3 id="grade"></h3>
-    <p id="explanation"></p>
+<body>
+  <h1>🔐 Password Grader</h1>
+  <p>Type in a password and find out how strong it is!</p>
 
-    <script>
-        function gradePassword() {
-            const pwd = document.getElementById("password").value;
-            const length = pwd.length;
-            const hasUpper = /[A-Z]/.test(pwd);
-            const hasLower = /[a-z]/.test(pwd);
-            const hasDigit = /[0-9]/.test(pwd);
-            const hasSymbol = /[^A-Za-z0-9]/.test(pwd);
-            const typesUsed = [hasUpper, hasLower, hasDigit, hasSymbol].filter(Boolean).length;
+  <input type="password" id="password" placeholder="Enter your password" />
+  <br>
+  <button onclick="gradePassword()">Check Password</button>
 
-            let grade = "F";
-            let explanation = "Very weak password. Use a mix of uppercase, lowercase, numbers, and symbols.";
+  <div id="grade" class=""></div>
+  <p id="explanation"></p>
 
-            if (length >= 12 && typesUsed >= 3) {
-                grade = "A";
-                explanation = "Strong password! Long and uses a mix of character types.";
-            } else if (length < 12 && typesUsed >= 3) {
-                grade = "B";
-                explanation = "Good password, but it's a bit short. Try using 12+ characters.";
-            } else if (length >= 8 && typesUsed >= 2) {
-                grade = "C";
-                explanation = "Decent password, but could be stronger with more character types.";
-            } else if (length < 8 && typesUsed >= 2) {
-                grade = "D";
-                explanation = "Weak password. Try using at least 8 characters.";
-            }
+  <div id="tips">
+    <h3>💡 What Makes a Good Password?</h3>
+    <ul style="text-align: left;">
+      <li>🔤 Use <strong>uppercase</strong> and <strong>lowercase</strong> letters</li>
+      <li>🔢 Add <strong>numbers</strong></li>
+      <li>💥 Use <strong>symbols</strong> like ! @ # $ %</li>
+      <li>🔒 Make it <strong>at least 12 characters</strong> long</li>
+      <li>🚫 Don’t use your name, pet’s name, or "12345"</li>
+    </ul>
+  </div>
 
-            document.getElementById("grade").textContent = `Grade: ${grade}`;
-            document.getElementById("explanation").textContent = explanation;
-        }
-    </script>
+  <script>
+    function gradePassword() {
+      const pwd = document.getElementById("password").value;
+      const length = pwd.length;
+      const hasUpper = /[A-Z]/.test(pwd);
+      const hasLower = /[a-z]/.test(pwd);
+      const hasDigit = /[0-9]/.test(pwd);
+      const hasSymbol = /[^A-Za-z0-9]/.test(pwd);
+      const typesUsed = [hasUpper, hasLower, hasDigit, hasSymbol].filter(Boolean).length;
+
+      let grade = "F";
+      let explanation = "❌ Very weak password. Use more types of characters!";
+      let cssClass = "grade-F";
+
+      if (length >= 12 && typesUsed >= 3) {
+        grade = "A ✅";
+        explanation = "🎉 Strong password! Great job using a mix of characters.";
+        cssClass = "grade-A";
+      } else if (length < 12 && typesUsed >= 3) {
+        grade = "B 👍";
+        explanation = "Good password, but try making it longer!";
+        cssClass = "grade-B";
+      } else if (length >= 8 && typesUsed >= 2) {
+        grade = "C 😐";
+        explanation = "Okay password. Try adding more types of characters.";
+        cssClass = "grade-C";
+      } else if (length < 8 && typesUsed >= 2) {
+        grade = "D 😬";
+        explanation = "Too short. Try at least 8 characters.";
+        cssClass = "grade-D";
+      }
+
+      const gradeDiv = document.getElementById("grade");
+      gradeDiv.textContent = `Grade: ${grade}`;
+      gradeDiv.className = cssClass;
+
+      document.getElementById("explanation").textContent = explanation;
+    }
+  </script>
 </body>
 </html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Password Grader</title>
+</head>
+<body style="font-family: sans-serif; text-align: center; padding: 40px;">
+    <h2>Password Strength Grader</h2>
+    <input type="password" id="password" placeholder="Enter password" size="40" />
+    <br><br>
+    <button onclick="gradePassword()">Check Password</button>
+    <h3 id="grade"></h3>
+    <p id="explanation"></p>
+
+    <script>
+        function gradePassword() {
+            const pwd = document.getElementById("password").value;
+            const length = pwd.length;
+            const hasUpper = /[A-Z]/.test(pwd);
+            const hasLower = /[a-z]/.test(pwd);
+            const hasDigit = /[0-9]/.test(pwd);
+            const hasSymbol = /[^A-Za-z0-9]/.test(pwd);
+            const typesUsed = [hasUpper, hasLower, hasDigit, hasSymbol].filter(Boolean).length;
+
+            let grade = "F";
+            let explanation = "Very weak password. Use a mix of uppercase, lowercase, numbers, and symbols.";
+
+            if (length >= 12 && typesUsed >= 3) {
+                grade = "A";
+                explanation = "Strong password! Long and uses a mix of character types.";
+            } else if (length < 12 && typesUsed >= 3) {
+                grade = "B";
+                explanation = "Good password, but it's a bit short. Try using 12+ characters.";
+            } else if (length >= 8 && typesUsed >= 2) {
+                grade = "C";
+                explanation = "Decent password, but could be stronger with more character types.";
+            } else if (length < 8 && typesUsed >= 2) {
+                grade = "D";
+                explanation = "Weak password. Try using at least 8 characters.";
+            }
+
+            document.getElementById("grade").textContent = `Grade: ${grade}`;
+            document.getElementById("explanation").textContent = explanation;
+        }
+    </script>
+</body>
+</html>
